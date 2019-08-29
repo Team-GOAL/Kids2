@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Second Page</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.js'></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.css' rel='stylesheet'/>
+    <link rel="stylesheet" href="../css/mapStoreLocator.css">
+    <script src="../Scripts/searchOnMapButton.js"></script>
+    <script src="../Scripts/client-request to find activity by preference.js"></script>
+
+</head>
+<body>
+<?php
+include 'Header.html';
+?>
+<p>Type in your suburb and find the sports facilities nearby!</p>
+<div class="col-12" class="container">
+    <div class="row">
+        <div class="col-3">
+            <form id= "mapForm"  name="mapForm" action="../php/server%20receive%20request%20on%20sports.php" method="post">
+                <p>Select your suburb: <input type="text" name="suburb" id="suburb"/></p>
+
+                <label for="sports">Select a sports activity</label>
+
+                <select name="sports" id="sports">
+                    <h4>Select your preference and see recommended sports activities</h4>
+                    <option value="Australian Rules Football">Australian Rules Football</option>
+                    <option value="Basketball">Basketball</option>
+                    <option value="Cricket">Cricket</option>
+                    <option value="Cycling">Cycling</option>
+                    <option value="Dancing">Dancing</option>
+                    <option value="Fitness / Gymnasium Workouts">Fitness / Gymnasium Workouts</option>
+                    <option value="Soccer" selected="selected">Soccer</option>
+                    <option value="Golf">Golf</option>
+                    <option value="Gymnastics">Gymnastics</option>
+                    <option value="Athletics">Athletics</option>
+                    <option value="Swimming">Swimming</option>
+                    <option value="Tennis">Tennis</option>
+                    <option value="Walking">Walking</option>
+                    <option value="Tennis">Tennis</option>
+                    <option value="Netball">Netball</option>
+                    <option value="Yoga">Yoga</option>
+                </select>
+                <br>
+            </form>
+            <button type="submit" form="mapForm" id="mapButton" value="Submit">Search by Suburb or Activity</button>
+        </div>
+
+
+        <h5>Select your preference and see recommended sports activities</h5>
+        <div id="ageList">
+            <label for="age">Select your child's age</label>
+            <select name="age" id="age">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option selected="selected">7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+            </select>
+        </div>
+        <div id="gender">
+            <legend>Select your child's gender (required)*</legend>
+            <label for="male">Male</label>
+            <input type="radio" name="gender" id="male" value="male">
+            <label for="female">Female</label>
+            <input type="radio" name="gender" id="female" value="female">
+        </div>
+        <div id="teamIndividual">
+            <legend>Team or individual sports?</legend>
+            <label for="team">Team</label>
+            <input type="radio" name="teamIndividual" id="team" value="team">
+            <label for="individual">Individual</label>
+            <input type="radio" name="teamIndividual" id="individual" value="individual">
+        </div>
+        <div id="indoorOutdoor">
+            <legend>Indoor or Outdoor?</legend>
+            <label for="indoor">Indoor</label>
+            <input type="radio" name="indoorOutdoor" id="indoor" value="indoor">
+            <label for="outdoor">Outdoor</label>
+            <input type="radio" name="indoorOutdoor" id="outdoor" value="outdoor">
+        </div>
+
+        <div id="activityResult">
+        </div>
+
+        <div class="mapContainer">
+            <div class='sidebar pad2'>Listing</div>
+            <div id='map' class='map pad2'>Map</div>
+        </div>
+
+        <button id="preferenceButton">See our recommendation</button>
+        <?php
+include 'Footer.html';
+?>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+
+        L.mapbox.accessToken = "pk.eyJ1Ijoiem9lMDkyNSIsImEiOiJjam5mNDV1bmgwM3NtM3ZxaXdmNmt2ZWk2In0.nF5xM1nKywEsPTmIf91tRw​";
+        var map = L.mapbox.map('map').setView([-37.818078, 144.96681], 13).addLayer(L.mapbox.styleLayer('mapbox://styles/mapbox/light-v10'));
+
+        map.on('load', function() {
+            var mapCanvas = document.getElementsByClassName('mapboxgl-canvas')[0];
+            var mapDiv = document.getElementById('map');
+            mapDiv.style.width = '50%';
+            mapCanvas.style.width = '100%';
+
+    $(document).ready(function () {
+        $("#male").click(function () {
+            $("#male").prop("checked", true);
+            $("#female").prop("checked", false);
+        });
+        $("#female").click(function () {
+            $("#female").prop("checked", true);
+            $("#male").prop("checked", false);
+        });
+        $("#team").click(function () {
+            $("#team").prop("checked", true);
+            $("#individual").prop("checked", false);
+        });
+        $("#individual").click(function () {
+            $("#individual").prop("checked", true);
+            $("#team").prop("checked", false);
+        });
+        $("#indoor").click(function () {
+            $("#indoor").prop("checked", true);
+            $("#outdoor").prop("checked", false);
+        });
+        $("#outdoor").click(function () {
+            $("#outdoor").prop("checked", true);
+            $("#indoor").prop("checked", false);
+        });
+        //Get the selected age
+        var selectedActivity = $("select[name='sports']").children("option:selected").val();
+        var selectedAge = $("select[name='age']").children("option:selected").val();
+        var genderValue = $("input[name='gender']:checked").val();
+        var teamValue = $("input[name='teamIndiidual']:checked").val();
+        var indoorValue = $("input[name='indoorOutdoor']:checked").val();
+    });
+
+    $("#mapButton").click(function () {
+        var suburb = $("#suburb").val();
+        var check = true;
+        if (suburb.length > 55) {
+            check = false;
+        }
+        if (suburb.length !== 0 && !suburb.match("^[a-zA-Z\(\)]+$")) {
+            check = false;
+        }
+        if (!check) {
+            alert("Please enter a valid suburb.");
+        }
+    });
+
+
+</script>
