@@ -1,86 +1,79 @@
 <?php
 
-require 'db-setup.php';
+require 'azr-db-setup.php';
 require 'iteration1 preference sql.php';
 
 //TODO check how to receive Ajax call from the client
 global $sql;
 //TODO
-// global $tableName="";
+$tableName = "dbo.sport_checklist_table_updated";//
+$_GET['team'] = "team";
+$_GET['indoor']="indoor";
+$_GET['age'] = "7";
+$_GET['gender'] = "female";
 
-global $sql;
-global $pdo;
-
-$dbType   = 'mysql';
-$host     = '127.0.0.1';
-$dbName   = '33';
-$userName = 'root';
-$pwd      = '33333333';
-
-$dsn = "$dbType:host=$host;dbname=$dbName";
-try {
-    $pdo = new PDO($dsn, $userName, $pwd);
-    $options = [
-        PDO::ATTR_EMULATE_PREPARES   => false, // turn off emulation mode for "real" prepared statements
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
-    ];
 
 // if all preference attributes are set:
 // find sports activity by age, gender, team/individual, indoor/outdoor
-if(!empty($_POST['teamIndividual']) && !empty($_POST['indoorOutdoor'])){
-    if($_POST['teamIndividual']==="team" && ($_POST['indoorOutdoor']==="indoor")){ // preference of team and indoor
-        $gender = $_POST['gender'];
-        $age = $_POST['age'];
-        $sql =listByAgeGenderTeamIndoor($age, $gender , $age, $dbName, $tableName);
+if(isset($_GET['team']) && isset($_GET['indoor'])){
+    if($_GET['team']==="team" && ($_GET['indoor']==="indoor")){ // preference of team and indoor
+		echo "1";
+        $sql =listByAgeGenderTeamIndoor($_GET['age'], $_GET['gender'], $_GET['team'], $_GET['indoor'],$dbName, $tableName);
+		echo $sql;
+	}
+    if($_GET['team']==="team" && ($_GET['indoor']==="outdoor")){ // preference of team and outdoor
+	echo "1.1";
+        $sql =listByAgeGenderTeamOutdoor($_GET['age'], $_GET['gender'], $_GET['team'], $_GET['indoor'], $dbName, $tableName);
     }
-    if($_POST['teamIndividual']==="team" && ($_POST['indoorOutdoor']==="outdoor")){ // preference of team and outdoor
-        $sql =listByAgeGenderTeamOutdoor($_POST['age'], $_POST['gender'],$dbName, $tableName);
+    if($_GET['team']==="individual" && ($_GET['indoor']==="indoor")){ // preference of individual and indoor
+	echo "1.2";
+        $sql =listByAgeGenderIndividualIndoor($_GET['age'], $_GET['gender'],  $_GET['team'],  $_GET['indoor'], $dbName, $tableName);
     }
-    if($_POST['teamIndividual']==="individual" && ($_POST['indoorOutdoor']==="indoor")){ // preference of individual and indoor
-        $sql =listByAgeGenderIndividualIndoor($_POST['age'], $_POST['gender'],   $dbName, $tableName);
-    }
-    if($_POST['teamIndividual']==="individual" && ($_POST['indoorOutdoor']==="outdoor")){ // preference of individual and outdoor
-        $sql =listByAgeGenderIndividualOutdoor($_POST['age'], $_POST['gender'],  $dbName, $tableName);
+    if($_GET['team']==="individual" && ($_GET['indoor']==="outdoor")){ // preference of individual and outdoor
+	echo "1.3";
+        $sql =listByAgeGenderIndividualOutdoor($_GET['age'], $_GET['gender'],  $_GET['team'], $_GET['indoor'], $dbName, $tableName);
     }
 }
 // if preference of age, gender, team/individual are set
 //find sports activity by age, gender, team/individual
-elseif(!empty($_POST['teamIndividual'])){
-    if($_POST['teamIndividual']==="team"){ // preference of team
-        $sql =listByAgeGenderTeam($_POST['age'], $_POST['gender'], $dbName, $tableName);
+elseif(isset($_GET['team'])){
+    if($_GET['team']==="team"){ // preference of team
+	echo "2.1";
+        $sql =listByAgeGenderTeam($_GET['age'], $_GET['gender'], $_GET['team'], $dbName, $tableName);
     }
-    if($_POST['teamIndividual']==="individual"){ // preference of team
-        $sql =listByAgeGenderIndividual($_POST['age'], $_POST['gender'], $dbName, $tableName);
+    if($_GET['team']==="individual"){ // preference of team
+	echo "2.2";
+        $sql =listByAgeGenderIndividual($_GET['age'], $_GET['gender'], $_GET['team'], $dbName, $tableName);
     }
 }
 // if preference of age, gender, indoor/outdoor are set,
 //find sports activity by age, gender, indoor/outdoor
-elseif(!empty($_POST['indoorOutdoor'])){
-    if($_POST['indoorOutdoor']==="indoor"){ // preference of indoor
-        $sql = listByAgeGenderIndoor($_POST['age'], $_POST['gender'],$dbName, $tableName);
+elseif(isset($_GET['indoor'])){
+    if($_GET['indoor']==="indoor"){ // preference of indoor
+	echo "3.1";
+        $sql = listByAgeGenderIndoor($_GET['age'], $_GET['gender'],$_GET['indoor'], $dbName, $tableName);
     }
-    if($_POST['indoorOutdoor']==="outdoor") { // preference of outdoor
-        $sql = listByAgeGenderOutdoor($_POST['age'], $_POST['gender'], $dbName, $tableName);
+    if($_GET['indoor']==="outdoor") { // preference of outdoor
+	echo "3.2";
+        $sql = listByAgeGenderOutdoor($_GET['age'], $_GET['gender'],$_GET['indoor'], $dbName, $tableName);
     }
 }
 // if preference of age, gender are set, find sports activity by age and gender.
 else{
-    $sql = listByAgeGender($_POST['age'], $_POST['gender'], $dbName, $tableName);
+	echo "3.3";
+    $sql = listByAgeGender($_GET['age'], $_GET['gender'], $dbName, $tableName);
 }
 
 // Create an empty array to store the query results.
+global $result_array;
+$result_array= array();
+$stmt = $pdo->query($sql);
+while ($row = $stmt->fetch()) {
+    $temp_array['activity'] = $row['SportsPlayed'];
+    $result_array = array_merge($temp_array, $result_array);
+}
 
-$stmt = $pdo->prepare($sql);
-$stmt>execute();
-$result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-/* send a JSON encoded array to client */
-
-echo json_encode($result );
-
-} catch (PDOException $e) {
-    echo 'Failed to connect：' . $e->getMessage();}
-
+/* send a JSON encded array to client */
+echo json_encode($result_array);
 
 ?>
