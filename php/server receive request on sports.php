@@ -3,9 +3,9 @@ require 'aws-db-setup3.php';
 
 global $sql;
 
-$tableName = "dbo.sports";
-$dbName = "database1syd";
-$_GET['suburb'] = "CAULFIELD";
+$tableName = "sports";
+$dbName = "kidsdatabase";
+//$_GET['suburb'] = "CAULFIELD";
 //$_GET['activity'] = "Soccer";
 
 

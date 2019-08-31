@@ -2,7 +2,7 @@
 header("Content-Type=text/html;charset=utf8");
 $dbType   = 'mysql';
 $host     = 'database-1.casaic7l2vnl.ap-southeast-2.rds.amazonaws.com';
-$dbName   = 'database1syd';
+$dbName   = 'kidsdatabase';
 $userName = 'admin';
 $pwd      = '!Raisingkids123';//33333333
 

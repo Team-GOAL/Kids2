@@ -6,11 +6,11 @@ require 'iteration1 preference sql.php';
 //TODO check how to receive Ajax call from the client
 global $sql;
 //TODO
-$tableName = "dbo.preference";//
-$_GET['team'] = "team";
-$_GET['indoor']="indoor";
-$_GET['age'] = "7";
-$_GET['gender'] = "female";
+$tableName = "preference";//
+//$_GET['team'] = "team";
+//$_GET['indoor']="indoor";
+//$_GET['age'] = "7";
+//$_GET['gender'] = "female";
 
 
 // if all preference attributes are set:

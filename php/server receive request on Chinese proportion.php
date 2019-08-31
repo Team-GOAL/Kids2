@@ -5,8 +5,8 @@ require 'aws-db-setup3.php';
 
 //TODO type in your database name below:
 //TODO type in your table name below:
-$tableName = "dbo.proportion";
-$dbName = "database1syd";
+$tableName = "chinesepopulation";
+$dbName = "kidsdatabase";
 
 
 //return top 20 suburbs with significant chinese population proporiton in a descending order
