@@ -1,6 +1,6 @@
 <?php
 
-require 'azr-db-setup.php';
+require 'aws-db-setup3.php';
 
 ///Input case 3:  user inputs Age and gender
 function listByAgeGender(string $age, string $gender, string $dbName, string $tableName){

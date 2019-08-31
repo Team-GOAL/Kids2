@@ -1,12 +1,12 @@
 <?php
 
-require 'azr-db-setup.php';
+require 'aws-db-setup3.php';
 require 'iteration1 preference sql.php';
 
 //TODO check how to receive Ajax call from the client
 global $sql;
 //TODO
-$tableName = "dbo.sport_checklist_table_updated";//
+$tableName = "dbo.preference";//
 $_GET['team'] = "team";
 $_GET['indoor']="indoor";
 $_GET['age'] = "7";
@@ -19,7 +19,6 @@ if(isset($_GET['team']) && isset($_GET['indoor'])){
     if($_GET['team']==="team" && ($_GET['indoor']==="indoor")){ // preference of team and indoor
 		echo "1";
         $sql =listByAgeGenderTeamIndoor($_GET['age'], $_GET['gender'], $_GET['team'], $_GET['indoor'],$dbName, $tableName);
-		echo $sql;
 	}
     if($_GET['team']==="team" && ($_GET['indoor']==="outdoor")){ // preference of team and outdoor
 	echo "1.1";
