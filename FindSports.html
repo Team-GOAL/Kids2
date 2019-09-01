@@ -293,9 +293,9 @@
             $('#displayPreference').empty();
             e.preventDefault();
             $.ajax({
-                url: "../php/server%20receive%20request%20on%20preference.php",
+                url: "../php/testPreference.php",
                 type: "POST",
-                data: $('#preferenceForm').serialize(),
+                data: $('#preferenecForm').serialize(),
                 //age: $('#age').val(),
                 // gender: genderVal,
                 //teamIndividual:teamVal,
