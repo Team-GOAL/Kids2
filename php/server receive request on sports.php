@@ -1,39 +1,59 @@
 <?php
-require 'aws-db-setup3.php';
+require 'db-setup.php'; // construct the database
+header('Content-type: application/json');
 
-global $sql;
+//Succeeded in browser.
 
-$tableName = "sports";
-$dbName = "kidsdatabase";
-//$_GET['suburb'] = "CAULFIELD";
-//$_GET['activity'] = "Soccer";
+//!!! No validation. Assume the user would enter both suburb and activity.
+//TODO add validation.
+
+global $suburb;
+global $sports;
 
 
-if(isset($_GET['suburb']) && isset($_GET['activity'])){//search by suburb and sports activity
-	echo "1.1";
-    $activty = $_GET['activity'];
-    $suburb = $_GET['suburb'];
-    $sql = "select * from $dbName.$tableName where SuburbTown = '$suburb' and SportsPlayed = '$activty'";
-}
-elseif(isset($_GET['suburb'])){//search by suburb
-	echo "1.2";
-    $suburb = $_GET['suburb'];
-    $sql = "select * from $dbName.$tableName where SuburbTown = '$suburb '";
-}
-else{// search by sports activity
-	echo "1.3";
-    $activty = $_GET['activity'];
-    $sql = "select * from $dbName.$tableName where SportsPlayed = '$activty'";
-}
+/*
+ * Test data:
+ * $_POST["suburb"] = "CLAYTON";
+ * $_POST["sports"] = "Soccer";
+ */
 
-global $result_array;
-// Create an empty array to store the query results.
-$result_array= array();
-$stmt = $pdo->query($sql);
-while ($row = $stmt->fetch()) {
-    array_push($result_array, $row);
+$suburb =  strtoupper($_POST["suburb"]);
+$sports = $_POST["sports"];
+
+//$sql = "select * from sports where sports.SuburbTown like ? and sports.SportsPlayed like ?";
+$sql = "select * from sports where sports.SuburbTown like '$suburb' and sports.SportsPlayed like '$sports'";
+
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    printf("Error: %s\n", mysqli_error($conn));
+    exit();
 }
 
-/* send a JSON encded array to client */
-echo json_encode($result_array);
+
+class Location{
+    public $facilityName;
+    public $lat;
+    public $lng;
+    public $sports;
+    public $address;
+}
+
+if (mysqli_num_rows($result) > 0) {
+while($row = mysqli_fetch_assoc($result)) {
+    $s=new Location();
+    $s->facilityName=$row['FacilityName'];
+    $s->lat=$row['Latitude'];
+    $s->lng=$row['Longitude'];
+    $s->sports=$row['SportsPlayed'];
+    $streetNo = strval($row['StreetNo']);
+    $s->address=$streetNo." ".$row['StreetName']." ".$row['StreetType']." ".$row['SuburbTown']." ".$row['Postcode'];
+    //add the record to the array
+    $arr[]=$s;
+}
+    echo json_encode($arr);
+} else {
+echo $conn-> error;
+}
+$conn->close();
+
 ?>

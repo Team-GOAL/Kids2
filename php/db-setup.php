@@ -1,23 +1,15 @@
 <?php
-
-    header("Content-Type=text/html;charset=utf8");
-    $dbType   = 'mysql';
-    $host     = '127.0.0.1';
-    $dbName   = '33';
-    $userName = 'root';
-    $pwd      = '33333333';
-
-    $dsn = "$dbType:host=$host;dbname=$dbName";
-    try {
-        $pdo = new PDO($dsn, $userName, $pwd);
-        $options = [
-            PDO::ATTR_EMULATE_PREPARES   => false, // turn off emulation mode for "real" prepared statements
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
-        ];
-//echo 'Successfully connected to the database.';
-    } catch (PDOException $e) {
-        echo 'Failed to connect：' . $e->getMessage();}
-
+    $servername = "database-1.casaic7l2vnl.ap-southeast-2.rds.amazonaws.com";
+    $username = "admin";
+    $password = "!Raisingkids123";
+    $db = "kidsdatabase";
+// Create connection
+    $conn = mysqli_connect($servername, $username, $password, $db);
+// Check connection
+        if (mysqli_connect_errno()) {
+            printf("Connect failed: %s\n", mysqli_connect_error());
+            exit();
+    }
+    //echo "Connected successfully";
 
 ?>
