@@ -22,10 +22,10 @@ global $outdoor;
 $team = $individual = $indoor = $team = 0;
 
 //Testing data:
-//$_POST["gender"] = "female";
-//$_POST["teamIndividual"] = "team";
-//$_POST["indoorOutdoor"] = "indoor";
-//$_POST["age"] = 7;
+$_POST["gender"] = "female";
+$_POST["teamIndividual"] = "team";
+$_POST["indoorOutdoor"] = "indoor";
+$_POST["age"] = 7;
 
 $gender = $_POST["gender"];
 $age = $_POST["age"];
