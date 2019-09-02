@@ -23,8 +23,13 @@ $team = $individual = $indoor = $team = 0;
 
 //Testing data:
 //$_POST["gender"] = "female";
+<<<<<<< HEAD
 //$_POST["teamIndividual"] = "team";
 //$_POST["indoorOutdoor"] = "indoor";
+=======
+$_POST["teamIndividual"] = "team";
+$_POST["indoorOutdoor"] = "indoor";
+>>>>>>> e25d59cb35ae72322da145cc06a89e7a234fbb74
 //$_POST["age"] = 7;
 
 $gender = $_POST["gender"];

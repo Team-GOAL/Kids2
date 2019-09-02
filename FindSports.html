@@ -153,7 +153,12 @@
         </div>
         <div class="container" style="margin-top: 5%;margin-bottom: 5%">
             <div class="col-6 offset-3" style="align-content: center; align-self: center; ">
+<<<<<<< HEAD
                 <form id="preferenceForm" name="preferenceForm" action="../php/server%20receive%20request%20on%20preference.php" method="post">
+=======
+                <form id="preferenceForm" name="preferenceForm"
+                      action="../php/server%20receive%20request%20on%20preference.php" method="post">
+>>>>>>> e25d59cb35ae72322da145cc06a89e7a234fbb74
                     <div id="ageList" style="align-content: center; align-self: center; ">
                         <label for="age">Select your child's age</label>
                         <select class="custom-select" name="age" id="age">
@@ -169,6 +174,12 @@
                             <option>9</option>
                             <option>10</option>
                             <option>11</option>
+<<<<<<< HEAD
+=======
+                            <option>12</option>
+                            <option>13</option>
+                            <option>14</option>
+>>>>>>> e25d59cb35ae72322da145cc06a89e7a234fbb74
                         </select>
                     </div>
                     <div id="genderList">
@@ -196,10 +207,18 @@
                         </select>
                     </div>
                     <br>
+<<<<<<< HEAD
                     <button style="border-radius: 4px;" type="button" form="preferenceForm" id="preferenceButton"
                             value="Submit">See our recommendation
                     </button>
                 </form>
+=======
+
+                </form>
+                <button style="border-radius: 4px;" type="button" form="preferenceForm" id="preferenceButton"
+                        value="Submit">See our recommendation
+                </button>
+>>>>>>> e25d59cb35ae72322da145cc06a89e7a234fbb74
                 <div id='displayPreference' style="align-content: center; align-self: center; padding-left: 5%;padding-top: 5%"></div>
 
             </div>
@@ -290,7 +309,11 @@
             $.ajax({
                 url: "../php/testPreference.php",
                 type: "POST",
+<<<<<<< HEAD
                 data: $('#preferenceForm').serialize(),
+=======
+                data: $('#preferenecForm').serialize(),
+>>>>>>> e25d59cb35ae72322da145cc06a89e7a234fbb74
                 //age: $('#age').val(),
                 // gender: genderVal,
                 //teamIndividual:teamVal,
