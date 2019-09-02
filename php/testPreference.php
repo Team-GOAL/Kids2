@@ -22,27 +22,26 @@ global $outdoor;
 $team = $individual = $indoor = $team = 0;
 
 //Testing data:
-$_POST["gender"] = "female";
-$_POST["teamIndividual"] = "team";
-$_POST["indoorOutdoor"] = "indoor";
-$_POST["age"] = 7;
+//$_POST["gender"] = "female";
+//$_POST["teamIndividual"] = "team";
+//$_POST["indoorOutdoor"] = "indoor";
+//$_POST["age"] = 7;
 
 $gender = $_POST["gender"];
 $age = $_POST["age"];
-if (!empty($_POST["teamIndividual"])) {
     if ($_POST["teamIndividual"] === "team") {
         $team = 1;
     } else {
         $individual = 1;
     }
-}
-if (!empty($_POST["indoorOutdoor"])) {
+
+
     if ($_POST["indoorOutdoor"] === "indoor") {
         $indoor = 1;
     } else {
         $outdoor = 1;
     }
-}
+
 
 if ($team === 1 && $indoor = 1) {
     $sql = "select * from preference where Min_Age <= '$age' and Max_Age >= '$age' and Gender = '$gender' and Indoor = 1 and Team_Sport = 1";
