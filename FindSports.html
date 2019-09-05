@@ -84,7 +84,7 @@
                 </div>
                 <form id="mapForm" name="mapForm" action="../php/server%20receive%20request%20on%20sports.php"
                       method="post">
-                    <P>Select your suburb: <input type="text" name="suburb" id="suburb"/>  * required</P>
+                    <P>Select your suburb: <input type="text" name="suburb" id="suburb"/> </P>
 
                     <script>
                         var suburb = $('#suburb');
@@ -92,10 +92,6 @@
                     <?php
                         if (!preg_match("/^[a-zA-Z ]*$/", $suburb)) {
                             $suburbErr = "Only letters and white space allowed";
-                            echo( $suburbErr);
-                        }
-                        if (!preg_match("/^[a-zA-Z ]*$/", $suburb)) {
-                            $sportsErr = "Only letters and white space allowed";
                             echo( $suburbErr);
                         }
                             ?>
@@ -130,7 +126,7 @@
                 </form>
                 <br>
                 <button type="button" form="mapForm" id="mapButton" value="Submit">Search by Suburb or Activity</button>
-            <div id="displayLocations"></div>
+            <div style="overflow: auto; width:500px; height:200px;" id="displayLocations"></div>
                 <br>
                 <p>Refersh to search again</p>
             </div>
@@ -274,9 +270,9 @@
                     $('#displayLocations').append(output);
                 },
                 error: function (jqxhr, status, exception) {
-                    //alert("No result found. Please refresh and search again.");
-                    alert(status);
-                    alert(exception);
+                    alert("No result found. Please refresh and search again.");
+                    //alert(status);
+                    //alert(exception);
                 }
             });
             $("#mapButton").unbind();
