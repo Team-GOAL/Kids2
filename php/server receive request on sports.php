@@ -9,7 +9,7 @@ header('Content-type: application/json');
 
 global $suburb;
 global $sports;
-
+global $sql;
 
 /*
  * Test data:
@@ -20,8 +20,16 @@ global $sports;
 $suburb =  strtoupper($_POST["suburb"]);
 $sports = $_POST["sports"];
 
+if(empty($_POST["suburb"])){
+    $sql = "select * from sports where sports.SportsPlayed like '$sports'";
+}
+elseif(empty($_POST["sports"])){
+    $sql = "select * from sports where sports.SuburbTown like '$suburb'";
+
+}
+else{$sql = "select * from sports where sports.SuburbTown like '$suburb' and sports.SportsPlayed like '$sports'";
+}
 //$sql = "select * from sports where sports.SuburbTown like ? and sports.SportsPlayed like ?";
-$sql = "select * from sports where sports.SuburbTown like '$suburb' and sports.SportsPlayed like '$sports'";
 
 $result = mysqli_query($conn, $sql);
 if (!$result) {
